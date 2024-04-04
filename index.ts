@@ -2,15 +2,17 @@
 if (process.env.NODE_ENV != 'production') require('dotenv').config();
 
 // Dependencies
-import connectToDatabase from './app/config/connectToDatabase';
+import cors from 'cors';
 import express from 'express';
+import connectToDatabase from './app/config/connectToDatabase';
 import notesController from './app/http/controllers/notesController';
 
 // Init
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 10;
 
 app.use(express.json());
+app.use(cors());
 
 // Database
 connectToDatabase();

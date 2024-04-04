@@ -1,0 +1,3 @@
+[submodule "app/src/front"]
+	path = app/src/front
+	url = git@github.com:C0rv0dev/energy-node-front.git
