@@ -6,7 +6,7 @@ import cors from 'cors';
 import express from 'express';
 import config from './app/config/config';
 import connectToDatabase from './app/config/connectToDatabase';
-import notesController from './app/http/controllers/notesController';
+import EnergyUseController from './app/http/controllers/EnergyUseController';
 
 // Init
 const app = express();
@@ -20,11 +20,11 @@ app.use(express.json());
 connectToDatabase();
 
 // Routing 
-app.get(`${baseUrl}/notes`, notesController.fetchNotes);
-app.get(`${baseUrl}/notes/:id`, notesController.getNote);
-app.post(`${baseUrl}/notes`, notesController.createNote);
-app.put(`${baseUrl}/notes/:id`, notesController.updateNote);
-app.delete(`${baseUrl}/notes/:id`, notesController.deleteNote);
+app.get(`${baseUrl}/energy/total`, EnergyUseController.getTotalEnergyUsage);
+app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.getEnergyUsage);
+app.post(`${baseUrl}/energy/my-usage`, EnergyUseController.createEnergyUse);
+app.put(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.updateEnergyUse);
+app.delete(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.deleteEnergyUse);
 
 // Start server
 app.listen(PORT);
