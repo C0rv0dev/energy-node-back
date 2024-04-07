@@ -1,32 +1,14 @@
 import EnergyUse from "../../models/EnergyUse";
 
 type EnergyUseControllerType = {
-  getEnergyUsage: (req: Request, res: Response) => void;
+  getEnergyUsageInformation: (req: Request, res: Response) => void;
   createEnergyUse: (req: Request, res: Response) => void;
   updateEnergyUse: (req: Request, res: Response) => void;
   deleteEnergyUse: (req: Request, res: Response) => void;
-  getTotalEnergyUsage: (req: Request, res: Response) => void;
 };
 
 class EnergyUseController implements EnergyUseControllerType {
-  getTotalEnergyUsage = async (req: any, res: any) => {
-    try {
-      const totalEnergyUsage = await EnergyUse.aggregate([
-        {
-          $group: {
-            _id: null,
-            totalEnergyUsage: { $sum: "$energyUse" },
-          },
-        },
-      ]);
-
-      res.json(totalEnergyUsage);
-    } catch (error) {
-      res.status(400).json({ error });
-    }
-  };
-
-  getEnergyUsage = async (req: any, res: any) => {
+  getEnergyUsageInformation = async (req: any, res: any) => {
     try {
       // Get all energy use data
       const energyUse = await EnergyUse.find().exec();
@@ -34,7 +16,9 @@ class EnergyUseController implements EnergyUseControllerType {
       // sum all energy use data
       const totalEnergyUsage = energyUse.reduce((acc, curr) => acc + curr.energyUse, 0);
 
-      res.json(totalEnergyUsage);
+      const totalEnergyUsageTarget = 1000;
+
+      res.json({ usage: totalEnergyUsage, totalUsage: totalEnergyUsageTarget });
     } catch (error) {
       res.status(400).json({ error });
     }

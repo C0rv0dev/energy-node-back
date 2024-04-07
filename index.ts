@@ -20,8 +20,7 @@ app.use(express.json());
 connectToDatabase();
 
 // Routing 
-app.get(`${baseUrl}/energy/total`, EnergyUseController.getTotalEnergyUsage);
-app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.getEnergyUsage);
+app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.getEnergyUsageInformation);
 app.post(`${baseUrl}/energy/my-usage`, EnergyUseController.createEnergyUse);
 app.put(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.updateEnergyUse);
 app.delete(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.deleteEnergyUse);
