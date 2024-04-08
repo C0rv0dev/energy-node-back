@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.SERVER_PORT || 3000;
 const API_VERSION = process.env.API_VERSION || 'v1';
 const API_BASE_URL = `/api/${API_VERSION}`;
 

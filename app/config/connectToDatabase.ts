@@ -2,15 +2,11 @@
 if (process.env.NODE_ENV != 'production') require('dotenv').config();
 
 import mongoose from 'mongoose';
-const uri = process.env.MONGO_URI;
+import mongoUri from './db.config';
 
 async function connectToDatabase() {
     try {
-        if (!uri) {
-            throw new Error('Mongo URI not found');
-        }
-
-        await mongoose.connect(uri);
+        await mongoose.connect(mongoUri);
         console.log('Connected to Database');
     } catch (err) {
         console.log('Error connecting to Database', err);
