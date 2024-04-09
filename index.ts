@@ -8,6 +8,7 @@ import config from './app/config/config';
 import connectToDatabase from './app/config/connectToDatabase';
 import EnergyUseController from './app/http/controllers/EnergyUseController';
 import HomeController from './app/http/controllers/HomeController';
+import AppSettingsController from './app/http/controllers/AppSettingsController';
 
 // Init
 const app = express();
@@ -24,6 +25,9 @@ connectToDatabase();
 
 // Home
 app.get(`${baseUrl}/home-display`, HomeController.index);
+
+// Total consumption range
+app.put(`${baseUrl}/energy/total-consumption-range`, AppSettingsController.updateSettings);
 
 // Energy use
 app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.fetchEnergyUse);
