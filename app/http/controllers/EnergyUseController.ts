@@ -1,28 +1,15 @@
 import EnergyUse from "../../models/EnergyUse";
+import { EnergyUseControllerInterface } from "../interfaces/EnergyUseControllerInterface";
 
-type EnergyUseControllerType = {
-  getEnergyUsageInformation: (req: Request, res: Response) => void;
-  createEnergyUse: (req: Request, res: Response) => void;
-  updateEnergyUse: (req: Request, res: Response) => void;
-  deleteEnergyUse: (req: Request, res: Response) => void;
-};
-
-class EnergyUseController implements EnergyUseControllerType {
-  getEnergyUsageInformation = async (req: any, res: any) => {
+class EnergyUseController implements EnergyUseControllerInterface {
+  fetchEnergyUse = async (req: any, res: any) => {
     try {
-      // Get all energy use data
       const energyUse = await EnergyUse.find().exec();
-
-      // sum all energy use data
-      const totalEnergyUsage = energyUse.reduce((acc, curr) => acc + curr.energyUse, 0);
-
-      const totalEnergyUsageTarget = 1000;
-
-      res.json({ usage: totalEnergyUsage, totalUsage: totalEnergyUsageTarget });
+      res.json(energyUse);
     } catch (error) {
       res.status(400).json({ error });
     }
-  };
+  }
 
   createEnergyUse = async (req: any, res: any) => {
     const { date, energyUse } = req.body;

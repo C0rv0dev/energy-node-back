@@ -7,6 +7,7 @@ import express from 'express';
 import config from './app/config/config';
 import connectToDatabase from './app/config/connectToDatabase';
 import EnergyUseController from './app/http/controllers/EnergyUseController';
+import HomeController from './app/http/controllers/HomeController';
 
 // Init
 const app = express();
@@ -20,7 +21,12 @@ app.use(express.json());
 connectToDatabase();
 
 // Routing 
-app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.getEnergyUsageInformation);
+
+// Home
+app.get(`${baseUrl}/home-display`, HomeController.index);
+
+// Energy use
+app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.fetchEnergyUse);
 app.post(`${baseUrl}/energy/my-usage`, EnergyUseController.createEnergyUse);
 app.put(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.updateEnergyUse);
 app.delete(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.deleteEnergyUse);
