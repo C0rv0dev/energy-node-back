@@ -15,7 +15,7 @@ class HomeController implements HomeControllerInterface {
       // get the total energy consumption range from the app settings
       const totalEnergyConsumptionRange = appSettings.reduce((acc, curr) => acc + curr.totalConsumptionRange, 0);
 
-      res.json({ usage: totalEnergyConsumed, totalUsage: totalEnergyConsumptionRange });
+      res.json({ usage: totalEnergyConsumed, totalConsumptionRange: totalEnergyConsumptionRange });
     } catch (error) {
       res.status(400).json({ error });
     }
