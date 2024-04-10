@@ -11,25 +11,32 @@ import EnergyUseController from './app/http/controllers/EnergyUseController';
 import HomeController from './app/http/controllers/HomeController';
 import AppSettingsController from './app/http/controllers/AppSettingsController';
 import UserController from './app/http/controllers/UserController';
+import AuthMiddleware from './app/http/middlewares/AuthMiddleware';
 
 // Init
 const app = express();
 const PORT = config.port;
 const baseUrl = config.api_base_url;
 
-app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 
 // Database
 connectToDatabase();
 
 // Routing 
 
+// Public Routes
 // Auth
 app.post(`${baseUrl}/auth/login`, UserController.login);
 app.post(`${baseUrl}/auth/register`, UserController.register);
 app.post(`${baseUrl}/auth/logout`, UserController.logout);
+
+// Private Routes
 
 // Home
 app.get(`${baseUrl}/home-display`, HomeController.fetchSettings);

@@ -1,4 +1,3 @@
-import React from 'react';
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import jwt from 'jsonwebtoken';
@@ -25,7 +24,8 @@ class AuthService implements AuthServiceInterface {
   }
 
   logout(req: any, res: any) {
-    res.send('logout');
+    res.clearCookie('Authorization');
+    res.status(200).json({ message: 'Logged out' });
   }
 
   async register(name: string, email: string, password: string) {

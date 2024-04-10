@@ -17,7 +17,7 @@ class UserController implements UserControllerInterface {
           // set cookie
           res.cookie('Authorization', token, {
             httpOnly: true,
-            expires: new Date(Date.now() + getTokenExpirationDate() * 1000),
+            expires: new Date(getTokenExpirationDate()),
             security: config.env === 'production',
             sameSite: 'lax',
           });
@@ -32,7 +32,11 @@ class UserController implements UserControllerInterface {
   }
 
   logout(req: any, res: any) {
-    // res.send('logout');
+    try {
+      AuthService.logout(req, res);
+    } catch (error) {
+      res.status(400).send('Error logging out');
+    }
   }
 
   async register(req: any, res: any) {
@@ -43,9 +47,13 @@ class UserController implements UserControllerInterface {
         return res.status(400).send('Missing required fields');
       }
 
-      await AuthService.register(name, email, password);
-
-      return res.status(201).send('User created');
+      await AuthService.register(name, email, password)
+        .then(() => {
+          return res.status(201).send('User created');
+        })
+        .catch((error) => {
+          return res.status(400).send(error.message);
+        });
     } catch (error) {
       res.status(500).send(error);
     }
