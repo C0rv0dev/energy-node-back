@@ -1,5 +1,5 @@
 import AppSettings from '../../models/AppSettings';
-import AppSettingsControllerInterface from '../interfaces/controllers/AppSettingsControllerInterface'
+import AppSettingsControllerInterface from '../../interfaces/controllers/AppSettingsControllerInterface'
 
 class AppSettingsController implements AppSettingsControllerInterface {
   updateSettings = async (req: any, res: any) => {

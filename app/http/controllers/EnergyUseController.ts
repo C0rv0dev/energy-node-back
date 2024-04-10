@@ -1,5 +1,5 @@
 import EnergyUse from "../../models/EnergyUse";
-import EnergyUseControllerInterface from "../interfaces/controllers/EnergyUseControllerInterface";
+import EnergyUseControllerInterface from "../../interfaces/controllers/EnergyUseControllerInterface";
 
 class EnergyUseController implements EnergyUseControllerInterface {
   fetchEnergyUse = async (req: any, res: any) => {

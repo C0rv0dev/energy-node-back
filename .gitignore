@@ -21,5 +21,6 @@ dist/
 .DS_Store
 Thumbs.db
 
-# Ignore package-lock.json
+# Ignore package manager files
 package-lock.json
+yarn.lock

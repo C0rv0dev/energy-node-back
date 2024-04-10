@@ -1,7 +1,7 @@
 import config from "../../config/config";
 import AuthService from "../../services/AuthService";
 import getTokenExpirationDate from "../../utils/getTokenExpirationDate";
-import UserControllerInterface from "../interfaces/controllers/UserControllerInterface";
+import UserControllerInterface from "../../interfaces/controllers/UserControllerInterface";
 
 class UserController implements UserControllerInterface {
   async login(req: any, res: any) {

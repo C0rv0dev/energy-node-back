@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import jwt from 'jsonwebtoken';
 
-import AuthServiceInterface from "../http/interfaces/services/AuthServiceInterface";
-import { UserRegisterInterface } from '../http/interfaces/models/UserModelInterface';
+import AuthServiceInterface from "../interfaces/services/AuthServiceInterface";
+import { UserRegisterInterface } from '../interfaces/models/UserModelInterface';
 import config from '../config/config';
 import getTokenExpirationDate from '../utils/getTokenExpirationDate';
 
