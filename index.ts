@@ -24,10 +24,10 @@ connectToDatabase();
 // Routing 
 
 // Home
-app.get(`${baseUrl}/home-display`, HomeController.index);
+app.get(`${baseUrl}/home-display`, HomeController.fetchSettings);
 
-// Total consumption range
-app.put(`${baseUrl}/energy/total-consumption-range`, AppSettingsController.updateSettings);
+// Settings
+app.put(`${baseUrl}/energy/settings`, AppSettingsController.updateSettings);
 
 // Energy use
 app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.fetchEnergyUse);
