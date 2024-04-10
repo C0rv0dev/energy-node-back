@@ -1,6 +1,6 @@
 import AppSettings from "../../models/AppSettings";
 import EnergyUse from "../../models/EnergyUse";
-import { HomeControllerInterface } from "../interfaces/HomeControllerInterface"
+import HomeControllerInterface from "../interfaces/controllers/HomeControllerInterface"
 
 type FirstLoad = {
   totalUsage: number;

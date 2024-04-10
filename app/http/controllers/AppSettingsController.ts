@@ -1,5 +1,5 @@
 import AppSettings from '../../models/AppSettings';
-import { AppSettingsControllerInterface } from '../interfaces/AppSettingsControllerInterface'
+import AppSettingsControllerInterface from '../interfaces/controllers/AppSettingsControllerInterface'
 
 class AppSettingsController implements AppSettingsControllerInterface {
   updateSettings = async (req: any, res: any) => {
@@ -16,7 +16,7 @@ class AppSettingsController implements AppSettingsControllerInterface {
       } else {
         await AppSettings.create({ totalConsumptionRange, pricePerKwh });
       }
-      
+
       res.status(200).json({ totalConsumptionRange, pricePerKwh });
     } catch (error) {
       res.status(400).json({ error });

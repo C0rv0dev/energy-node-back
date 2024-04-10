@@ -4,11 +4,13 @@ if (process.env.NODE_ENV != 'production') require('dotenv').config();
 // Dependencies
 import cors from 'cors';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import config from './app/config/config';
 import connectToDatabase from './app/config/connectToDatabase';
 import EnergyUseController from './app/http/controllers/EnergyUseController';
 import HomeController from './app/http/controllers/HomeController';
 import AppSettingsController from './app/http/controllers/AppSettingsController';
+import UserController from './app/http/controllers/UserController';
 
 // Init
 const app = express();
@@ -16,12 +18,18 @@ const PORT = config.port;
 const baseUrl = config.api_base_url;
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 // Database
 connectToDatabase();
 
 // Routing 
+
+// Auth
+app.post(`${baseUrl}/auth/login`, UserController.login);
+app.post(`${baseUrl}/auth/register`, UserController.register);
+app.post(`${baseUrl}/auth/logout`, UserController.logout);
 
 // Home
 app.get(`${baseUrl}/home-display`, HomeController.fetchSettings);

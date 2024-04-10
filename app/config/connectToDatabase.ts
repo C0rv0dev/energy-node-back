@@ -5,8 +5,6 @@ import mongoose from 'mongoose';
 import mongoUri from './db.config';
 
 async function connectToDatabase() {
-    console.log('Connecting to Database: ' + mongoUri);
-
     try {
         await mongoose.connect(mongoUri);
         console.log('Connected to Database');
