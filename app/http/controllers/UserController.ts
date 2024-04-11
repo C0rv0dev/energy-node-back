@@ -2,6 +2,7 @@ import config from "../../config/config";
 import AuthService from "../../services/AuthService";
 import getTokenExpirationDate from "../../utils/getTokenExpirationDate";
 import UserControllerInterface from "../../interfaces/controllers/UserControllerInterface";
+import { UserRegisterInterface } from "../../interfaces/models/UserModelInterface";
 
 class UserController implements UserControllerInterface {
   async login(req: any, res: any) {
@@ -41,18 +42,30 @@ class UserController implements UserControllerInterface {
 
   async register(req: any, res: any) {
     try {
-      const { name, email, password } = req.body;
+      const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
-      if (!name || !email || !password) {
-        return res.status(400).send('Missing required fields');
+      if (!firstName || !lastName || !email || !password || !passwordConfirm) {
+        return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      await AuthService.register(name, email, password)
+      if (password !== passwordConfirm) {
+        return res.status(400).json({ error: 'Passwords do not match' });
+      }
+
+      const formData: UserRegisterInterface = {
+        firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirm,
+      };
+
+      await AuthService.register(formData)
         .then(() => {
-          return res.status(201).send('User created');
+          return res.status(201).json({ message: 'User created' });
         })
         .catch((error) => {
-          return res.status(400).send(error.message);
+          return res.status(400).json({ message: error.message });
         });
     } catch (error) {
       res.status(500).send(error);

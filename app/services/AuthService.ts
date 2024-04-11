@@ -28,15 +28,9 @@ class AuthService implements AuthServiceInterface {
     res.status(200).json({ message: 'Logged out' });
   }
 
-  async register(name: string, email: string, password: string) {
-    const hashPass = bcrypt.hashSync(password, 10);
-
-    const user: UserRegisterInterface = {
-      name,
-      email,
-      password: hashPass,
-    };
-
+  async register(user: UserRegisterInterface) {
+    const hashPass = bcrypt.hashSync(user.password, 10);
+    user.password = hashPass;
     await User.create(user);
   }
 

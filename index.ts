@@ -31,13 +31,17 @@ connectToDatabase();
 // Routing 
 
 // Public Routes
+// Health check
+app.get(`${baseUrl}/health`, (req, res) => {
+    res.status(200).json({ 'health': 'pumping...' });
+});
+
 // Auth
 app.post(`${baseUrl}/auth/login`, UserController.login);
 app.post(`${baseUrl}/auth/register`, UserController.register);
 app.post(`${baseUrl}/auth/logout`, UserController.logout);
 
 // Private Routes
-
 // Home
 app.get(`${baseUrl}/home-display`, HomeController.fetchSettings);
 

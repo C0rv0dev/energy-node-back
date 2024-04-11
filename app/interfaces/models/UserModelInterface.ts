@@ -1,7 +1,9 @@
 interface UserRegisterInterface {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
+    passwordConfirm?: string;
 }
 
 interface UserLoginInterface {
