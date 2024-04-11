@@ -18,21 +18,25 @@ class HomeController implements HomeControllerInterface {
       const appSettings = await AppSettings.find().exec();
 
       // sum all energy use data
-      const totalEnergyConsumed = energyUse.reduce((acc, curr) => acc + curr.energyUse, 0);
+      const totalEnergyConsumed = energyUse.reduce((acc, curr) => acc + (curr?.energyUse || 0), 0);
 
       // get the total energy consumption range from the app settings
-      const totalEnergyConsumptionRange = appSettings[0].totalConsumptionRange ?? 0;
+      const totalEnergyConsumptionRange = 0;
+
+      // get the price per kWh 
+      const pricePerKwh = 0;
 
       // create a return object
       const settings: FirstLoad = {
         totalUsage: totalEnergyConsumed,
         totalConsumptionRange: totalEnergyConsumptionRange,
-        pricePerKwh: appSettings[0].pricePerKwh ?? 0,
+        pricePerKwh,
       };
 
       res.json(settings);
-    } catch (error) {
-      res.status(400).json({ error });
+    } catch (err) {
+      console.log(err);
+      res.status(400).json({ error: "An error ocurred while fetching settings." });
     }
   }
 }

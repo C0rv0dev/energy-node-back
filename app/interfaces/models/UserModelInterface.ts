@@ -7,8 +7,9 @@ interface UserRegisterInterface {
 }
 
 interface UserLoginInterface {
-    id: number;
-    name: string | null | undefined;
+    id: string;
+    firstName: string;
+    lastName: string | undefined | null;
     email: string;
 }
 

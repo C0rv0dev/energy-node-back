@@ -3,7 +3,7 @@ import User from '../models/User';
 import jwt from 'jsonwebtoken';
 
 import AuthServiceInterface from "../interfaces/services/AuthServiceInterface";
-import { UserRegisterInterface } from '../interfaces/models/UserModelInterface';
+import { UserLoginInterface, UserRegisterInterface } from '../interfaces/models/UserModelInterface';
 import config from '../config/config';
 import getTokenExpirationDate from '../utils/getTokenExpirationDate';
 
@@ -20,7 +20,17 @@ class AuthService implements AuthServiceInterface {
     }
 
     // create token
-    return this.createToken(user);
+    const token = this.createToken(user);
+
+    // remove password property from user object
+    const loggedUser: UserLoginInterface = {
+      id: user._id.toString(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    }
+
+    return { user: loggedUser, token };
   }
 
   logout(req: any, res: any) {

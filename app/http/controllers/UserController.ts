@@ -10,22 +10,21 @@ class UserController implements UserControllerInterface {
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return res.status(400).send('Missing required fields');
+        return res.status(400).json({ error: 'Missing required fields' });
       }
 
       AuthService.login(email, password)
-        .then((token) => {
+        .then(({ user, token }) => {
           // set cookie
           res.cookie('Authorization', token, {
-            httpOnly: true,
+            // httpOnly: true,
             expires: new Date(getTokenExpirationDate()),
             security: config.env === 'production',
-            sameSite: 'lax',
           });
 
-          res.sendStatus(200);
+          res.status(200).json({ user });
         }).catch((error) => {
-          res.status(401).send(error.message);
+          res.status(401).json({ error: "Invalid credentials. Please try again." });
         });
     } catch (error) {
       res.status(500).send(error)
