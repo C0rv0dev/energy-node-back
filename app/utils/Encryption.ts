@@ -5,5 +5,6 @@ export const encrypt = (textToEncrypt: string): string => CryptoJs.AES.encrypt(t
 
 export const decrypt = (encryptedText: string): string => {
     const bytes = CryptoJs.AES.decrypt(encryptedText, config.encryption_secret);
-    return bytes && bytes.toString(CryptoJs.enc.Utf8);
+    const originaltext = bytes && bytes.toString(CryptoJs.enc.Utf8);
+    return originaltext;
 }

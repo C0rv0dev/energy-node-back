@@ -11,6 +11,7 @@ interface UserLoginInterface {
     firstName: string;
     lastName: string | undefined | null;
     email: string;
+    token: string;
 }
 
 export type {

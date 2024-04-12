@@ -3,6 +3,7 @@ import AuthService from "../../services/AuthService";
 import getTokenExpirationDate from "../../utils/getTokenExpirationDate";
 import UserControllerInterface from "../../interfaces/controllers/UserControllerInterface";
 import { UserRegisterInterface } from "../../interfaces/models/UserModelInterface";
+import { encrypt } from "../../utils/Encryption";
 
 class UserController implements UserControllerInterface {
   async login(req: any, res: any) {
@@ -14,9 +15,12 @@ class UserController implements UserControllerInterface {
       }
 
       AuthService.login(email, password)
-        .then(({ user, token }) => {
+        .then(({ user }) => {
+          const rawCookie = JSON.stringify(user);
+          const encryptedCookie = encrypt(rawCookie);
+
           // set cookie
-          res.cookie('Authorization', token, {
+          res.cookie('Authorization', encryptedCookie, {
             // httpOnly: true,
             expires: new Date(getTokenExpirationDate()),
             security: config.env === 'production',
@@ -33,9 +37,9 @@ class UserController implements UserControllerInterface {
 
   logout(req: any, res: any) {
     try {
-      AuthService.logout(req, res);
+      return AuthService.logout(req, res);
     } catch (error) {
-      res.status(400).send('Error logging out');
+      res.status(400).json({ error: 'Error logging out' });
     }
   }
 

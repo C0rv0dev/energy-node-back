@@ -32,9 +32,7 @@ connectToDatabase();
 
 // Public Routes
 // Health check
-app.get(`${baseUrl}/health`, (req, res) => {
-    res.status(200).json({ 'health': 'pumping...' });
-});
+app.get(`${baseUrl}/health`, (req, res) => { res.status(200).json({ 'health': 'pumping...' }); });
 
 // Auth
 app.post(`${baseUrl}/auth/login`, UserController.login);
@@ -43,16 +41,16 @@ app.post(`${baseUrl}/auth/logout`, UserController.logout);
 
 // Private Routes
 // Home
-app.get(`${baseUrl}/home-display`, HomeController.fetchSettings);
+app.get(`${baseUrl}/home-display`, AuthMiddleware, HomeController.fetchSettings);
 
 // Settings
-app.put(`${baseUrl}/energy/settings`, AppSettingsController.updateSettings);
+app.put(`${baseUrl}/energy/settings`, AuthMiddleware, AppSettingsController.updateSettings);
 
 // Energy use
-app.get(`${baseUrl}/energy/my-usage`, EnergyUseController.fetchEnergyUse);
-app.post(`${baseUrl}/energy/my-usage`, EnergyUseController.createEnergyUse);
-app.put(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.updateEnergyUse);
-app.delete(`${baseUrl}/energy/my-usage/:id`, EnergyUseController.deleteEnergyUse);
+app.get(`${baseUrl}/energy/my-usage`, AuthMiddleware, EnergyUseController.fetchEnergyUse);
+app.post(`${baseUrl}/energy/my-usage`, AuthMiddleware, EnergyUseController.createEnergyUse);
+app.put(`${baseUrl}/energy/my-usage/:id`, AuthMiddleware, EnergyUseController.updateEnergyUse);
+app.delete(`${baseUrl}/energy/my-usage/:id`, AuthMiddleware, EnergyUseController.deleteEnergyUse);
 
 // Start server
 app.listen(PORT);

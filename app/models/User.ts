@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  settings: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'AppSettings',
+  },
 });
 
 const User = mongoose.model('User', UserSchema);

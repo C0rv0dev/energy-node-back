@@ -14,17 +14,17 @@ class HomeController implements HomeControllerInterface {
       // Get all energy use data
       const energyUse = await EnergyUse.find().exec();
 
-      // Get all app settings
-      const appSettings = await AppSettings.find().exec();
+      // Get app settings for the user
+      const appSettings = await this.getUserAppSettings(req, res);
 
       // sum all energy use data
       const totalEnergyConsumed = energyUse.reduce((acc, curr) => acc + (curr?.energyUse || 0), 0);
 
       // get the total energy consumption range from the app settings
-      const totalEnergyConsumptionRange = 0;
+      const totalEnergyConsumptionRange = appSettings[0].totalConsumptionRange;
 
       // get the price per kWh 
-      const pricePerKwh = 0;
+      const pricePerKwh = appSettings[0].pricePerKwh;
 
       // create a return object
       const settings: FirstLoad = {
@@ -38,6 +38,19 @@ class HomeController implements HomeControllerInterface {
       console.log(err);
       res.status(400).json({ error: "An error ocurred while fetching settings." });
     }
+  }
+
+  private async getUserAppSettings(req: any, res: any): Promise<any> {
+    // Get app settings for the user    
+    let appSettings = await AppSettings.find({ user: req.user._id }).exec();
+
+    // If no app settings exist for the user, create them
+    if (!(appSettings.length > 0)) {
+      await AppSettings.create({ user: req.user._id, pricePerKwh: 0, totalConsumptionRange: 0 });
+      appSettings = await AppSettings.find({ user: req.user._id }).exec();
+    }
+
+    return appSettings;
   }
 }
 

@@ -28,9 +28,10 @@ class AuthService implements AuthServiceInterface {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      token,
     }
 
-    return { user: loggedUser, token };
+    return { user: loggedUser };
   }
 
   logout(req: any, res: any) {
