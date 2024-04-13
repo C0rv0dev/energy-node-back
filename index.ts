@@ -52,6 +52,8 @@ app.post(`${baseUrl}/energy/my-usage`, AuthMiddleware, EnergyUseController.fetch
 
 app.post(`${baseUrl}/energy/my-usage/create`, AuthMiddleware, EnergyUseController.createEnergyUse);
 app.put(`${baseUrl}/energy/my-usage/:id`, AuthMiddleware, EnergyUseController.updateEnergyUse);
+
+app.delete(`${baseUrl}/energy/clear-records`, AuthMiddleware, EnergyUseController.clearEnergyUse);
 app.delete(`${baseUrl}/energy/my-usage/:id`, AuthMiddleware, EnergyUseController.deleteEnergyUse);
 
 // Start server
