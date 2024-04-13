@@ -12,7 +12,7 @@ class HomeController implements HomeControllerInterface {
   fetchSettings = async (req: any, res: any) => {
     try {
       // Get all energy use data
-      const energyUse = await EnergyUse.find().exec();
+      const energyUse = await EnergyUse.find({ user: req.user._id }).exec();
 
       // Get app settings for the user
       const appSettings = await this.getUserAppSettings(req, res);

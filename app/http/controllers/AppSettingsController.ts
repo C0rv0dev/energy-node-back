@@ -6,8 +6,9 @@ class AppSettingsController implements AppSettingsControllerInterface {
     const { totalConsumptionRange, pricePerKwh } = req.body;
 
     try {
-      // Update or create settings
-      const settings = await AppSettings.findOne().exec();
+      // Get app settings from user
+      const settings = await AppSettings.findOne({ user: req.user._id }).exec();
+
       if (settings) {
         settings.totalConsumptionRange = totalConsumptionRange;
         settings.pricePerKwh = pricePerKwh;
