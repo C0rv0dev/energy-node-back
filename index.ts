@@ -48,6 +48,8 @@ app.put(`${baseUrl}/energy/settings`, AuthMiddleware, AppSettingsController.upda
 
 // Energy use
 app.get(`${baseUrl}/energy/my-usage`, AuthMiddleware, EnergyUseController.fetchEnergyUse);
+app.post(`${baseUrl}/energy/my-usage`, AuthMiddleware, EnergyUseController.fetchEnergyUse);
+
 app.post(`${baseUrl}/energy/my-usage/create`, AuthMiddleware, EnergyUseController.createEnergyUse);
 app.put(`${baseUrl}/energy/my-usage/:id`, AuthMiddleware, EnergyUseController.updateEnergyUse);
 app.delete(`${baseUrl}/energy/my-usage/:id`, AuthMiddleware, EnergyUseController.deleteEnergyUse);

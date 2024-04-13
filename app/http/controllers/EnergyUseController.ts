@@ -4,19 +4,31 @@ import EnergyUseControllerInterface from "../../interfaces/controllers/EnergyUse
 class EnergyUseController implements EnergyUseControllerInterface {
   fetchEnergyUse = async (req: any, res: any) => {
     try {
-      const energyUse = await EnergyUse.find().exec();
-      res.json(energyUse);
+      const { date } = req.body;
+      let energyUseList: any = [];
+
+      energyUseList = await EnergyUse.find({ user: req.user._id }).exec();
+
+      if (date) {
+        energyUseList = await EnergyUse.find({ user: req.user._id, date }).exec();
+      }
+
+      // get the difference between the meter readings to get the total energy usage
+      const totalUsage = this.getTotalUsage(energyUseList);
+
+      res.json({ records: energyUseList, totalUsage });
     } catch (error) {
       res.status(400).json({ error });
     }
   }
 
   createEnergyUse = async (req: any, res: any) => {
-    const { date, energyUse } = req.body;
+    const { date, meter_reading, price_per_kwh } = req.body;
+    const formattedDate = new Date(date).toLocaleDateString();
 
     try {
-      const newEnergyUse = await EnergyUse.create({ date, energyUse });
-      res.json(newEnergyUse);
+      await EnergyUse.create({ user: req.user._id, date: formattedDate, meter_reading, price_on_the_day: price_per_kwh });
+      res.sendStatus(200);
     } catch (error) {
       res.status(400).json({ error });
     }
@@ -48,6 +60,23 @@ class EnergyUseController implements EnergyUseControllerInterface {
     } catch (error) {
       res.status(400).json({ error });
     }
+  }
+
+  private getTotalUsage = (energyUseList: any) => {
+    let totalUsage = 0;
+    let previousReading = 0;
+
+    energyUseList.forEach((record: any) => {
+      if (previousReading <= 0) {
+        previousReading = record.meter_reading;
+        return;
+      }
+
+      totalUsage += (record.meter_reading - previousReading);
+      previousReading = record.meter_reading;
+    });
+
+    return totalUsage;
   }
 }
 
