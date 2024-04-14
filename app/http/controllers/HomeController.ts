@@ -1,9 +1,12 @@
 import AppSettings from "../../models/AppSettings";
 import HomeControllerInterface from "../../interfaces/controllers/HomeControllerInterface"
+import EnergyUse from "../../models/EnergyUse";
+import { getTotalEnergyUse } from "../../utils/getTotalEnergyUse";
 
 type FirstLoad = {
   totalConsumptionRange: number;
   pricePerKwh: number;
+  estimatedCost: number;
 }
 
 class HomeController implements HomeControllerInterface {
@@ -18,10 +21,14 @@ class HomeController implements HomeControllerInterface {
       // get the price per kWh 
       const pricePerKwh = appSettings[0].pricePerKwh;
 
+      // get estimated cost
+      const estimatedCost = await this.getEstimatedCost(pricePerKwh, req.user._id);
+
       // create a return object
       const settings: FirstLoad = {
         totalConsumptionRange: totalEnergyConsumptionRange,
         pricePerKwh,
+        estimatedCost
       };
 
       res.json(settings);
@@ -43,6 +50,12 @@ class HomeController implements HomeControllerInterface {
 
     return appSettings;
   }
+
+  private async getEstimatedCost(pricePerKwh: number, userId: string): Promise<number> {
+    const energyUseList = await EnergyUse.find({ user: userId }).exec();
+    const totalUsage = getTotalEnergyUse(energyUseList);
+    return totalUsage * pricePerKwh;
+  };
 }
 
 export default new HomeController();

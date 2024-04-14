@@ -1,5 +1,6 @@
 import EnergyUse from "../../models/EnergyUse";
 import EnergyUseControllerInterface from "../../interfaces/controllers/EnergyUseControllerInterface";
+import { getTotalEnergyUse } from "../../utils/getTotalEnergyUse";
 import { EnergyUseRecord, RecordCollection } from "../../interfaces/models/RecordInterface";
 
 class EnergyUseController implements EnergyUseControllerInterface {
@@ -33,7 +34,7 @@ class EnergyUseController implements EnergyUseControllerInterface {
       });
 
       // get the difference between the meter readings to get the total energy usage
-      const totalUsage = this.getTotalUsage(energyUseList);
+      const totalUsage = getTotalEnergyUse(energyUseList);
       const dateOptions = this.getMonthOptions();
 
       res.json({ records: recordsCollection, totalUsage, dateOptions });
@@ -80,27 +81,6 @@ class EnergyUseController implements EnergyUseControllerInterface {
     } catch (error) {
       res.status(400).json({ error });
     }
-  }
-
-  private getTotalUsage = (energyUseList: any) => {
-    let totalUsage = 0;
-    let previousReading = 0;
-
-    energyUseList.forEach((record: any) => {
-      const recordDate = new Date(record.date);
-      const currentDate = new Date();
-      if (recordDate.getMonth() !== currentDate.getMonth() || recordDate.getFullYear() !== currentDate.getFullYear()) return;
-
-      if (previousReading <= 0) {
-        previousReading = record.meter_reading;
-        return;
-      }
-
-      totalUsage += (record.meter_reading - previousReading);
-      previousReading = record.meter_reading;
-    });
-
-    return totalUsage;
   }
 
   clearEnergyUse = (req: any, res: any) => {
